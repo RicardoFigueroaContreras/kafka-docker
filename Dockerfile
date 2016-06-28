@@ -6,11 +6,17 @@ RUN apk add --update unzip wget curl docker jq coreutils
 
 ENV KAFKA_VERSION="0.10.0.0" SCALA_VERSION="2.11"
 ADD download-kafka.sh /tmp/download-kafka.sh
+RUN chmod +x /tmp/download-kafka.sh
 RUN /tmp/download-kafka.sh && tar xfz /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt && rm /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
 VOLUME ["/kafka"]
 
 ENV KAFKA_HOME /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION}
+
+RUN chmod +x /tmp/start-kafka.sh
+RUN chmod +x /tmp/broker-list.sh
+RUN chmod +x /tmp/create-topics.sh
+
 ADD start-kafka.sh /usr/bin/start-kafka.sh
 ADD broker-list.sh /usr/bin/broker-list.sh
 ADD create-topics.sh /usr/bin/create-topics.sh
